@@ -12,9 +12,15 @@ def reconstruir_caminho(pai, destino):
 
     return caminho
 
-def bfs(grafo, origem, destino):
+def bfs(grafo, origem, destino, bloqueadas=None):
     if origem not in grafo or destino not in grafo:
         return None, []
+    
+    if origem in bloqueadas or destino in bloqueadas:
+        return None, []
+    
+    if bloqueadas is None:
+        bloqueadas = set()
     
     fila = deque([origem])
     visitados = set()
@@ -36,14 +42,20 @@ def bfs(grafo, origem, destino):
             
         
         for vizinho in grafo[atual]:
-            if vizinho not in visitados and vizinho not in pai:
+            if (vizinho not in visitados 
+                and vizinho not in pai 
+                and vizinho not in bloqueadas
+            ):
                 pai[vizinho] = atual
                 fila.append(vizinho)
         
     return None, ordem_visita
 
-def dfs(grafo, origem, destino):
+def dfs(grafo, origem, destino, bloqueadas=None):
     if origem not in grafo or destino not in grafo:
+        return None, []
+    
+    if origem in bloqueadas or destino in bloqueadas:
         return None, []
     
     pilha = [origem]
@@ -65,7 +77,10 @@ def dfs(grafo, origem, destino):
             return caminho, ordem_visita
         
         for vizinho in grafo[atual]:
-            if vizinho not in visitados and vizinho not in pai:
+            if (vizinho not in visitados 
+                and vizinho not in pai
+                and vizinho not in bloqueadas
+            ):
                 pai[vizinho] = atual
                 pilha.append(vizinho)
 

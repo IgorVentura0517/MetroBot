@@ -8,22 +8,23 @@ def main():
     caminho_bfs, visita_bfs = bfs(
         grafo,
         "Sé", 
-        "São Joaquim"
+        "São Joaquim",
+        bloqueadas={"Japão-Liberdade"}
     )
+
+    print(caminho_bfs)
+    print(visita_bfs)
 
     caminho_dfs, visita_dfs = dfs(
         grafo,
         "Sé",
-        "São Joaquim"
+        "São Joaquim",
+        bloqueadas={"Jpão-Liberdade"}
     )
 
-    print("BFS")
-    print("Ordem de visita:", visita_bfs)
-    print("Caminho:", caminho_bfs)
+    print(caminho_dfs)
+    print(visita_dfs)
 
-    print("\nDFS")
-    print("Ordem de visita:", visita_dfs)
-    print("Caminho:", caminho_dfs)
 
 if __name__=="__main__":
     main()

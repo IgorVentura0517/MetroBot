@@ -1,42 +1,44 @@
 from data.linhas import LINHA_1_AZUL
 from core.grafo import construir_grafo
 from core.busca import bfs, dfs
-from data.locais import buscar_estacao
+from data.locais import buscar_estacao, resolver_local
 
 def main():
     grafo = construir_grafo(LINHA_1_AZUL)
 
-    local = "Catedral da Sé"
-    destino = buscar_estacao(local)
+    origem_usuario = "Pinacoteca"
+    destino_usuario = "Catedral da Sé"
+
+    origem = resolver_local(origem_usuario)
+    destino = resolver_local(destino_usuario)
+
+    if origem is None:
+        print("Origem não encontrada.")
+        return
 
     if destino is None:
-        print("Local não encontrado.")
+        print("Destino não encontrado.")
         return
 
     caminho_bfs, visita_bfs = bfs(
         grafo,
-        "Tucuruvi", 
+        origem, 
         destino
     )
-
-    print(buscar_estacao("Catedral da Sé"))
-    print(buscar_estacao("catedral da sé"))
-    print(buscar_estacao("CATEDRAL DA SÉ"))
-    print(buscar_estacao("   Catedral da Sé   "))
-    print(buscar_estacao("catedral da se"))
-    print(buscar_estacao("MUSEU DA LINGUA PORTUGUESA"))
-    print(buscar_estacao("MASP"))
-
+    print("\nBFS")
+    print("Origem:", origem)
+    print("Destino:", destino)
+    print("Rota:", caminho_bfs)
 
     caminho_dfs, visita_dfs = dfs(
         grafo,
-        "Tucuruvi",
+        origem,
         destino
     )
-
-
-
-
+    print("\nDFS")
+    print("Origem:", origem)
+    print("Destino:", destino)
+    print("Rota:", caminho_dfs)
 
 if __name__=="__main__":
     main()

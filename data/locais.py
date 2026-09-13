@@ -1,4 +1,5 @@
 import unicodedata
+from data.linhas import LINHA_1_AZUL
 
 LOCAIS = {
     "Catedral da Sé": "Sé",
@@ -14,8 +15,7 @@ def buscar_estacao(local):
 
     for nome_local, estacao in LOCAIS.items():
         if normalizar_texto(nome_local) == local_normalizado:
-            return estacao
-        
+            return estacao   
     return None
 
 def normalizar_texto(texto):
@@ -28,5 +28,13 @@ def normalizar_texto(texto):
         for caractere in texto
         if unicodedata.category(caractere) != "Mn"
     )
-
     return texto
+
+def resolver_local(entrada):
+    entrada_normalizada = normalizar_texto(entrada)
+
+    for estacao in LINHA_1_AZUL:
+        if normalizar_texto(estacao) == entrada_normalizada:
+            return estacao
+        
+    return buscar_estacao(entrada)

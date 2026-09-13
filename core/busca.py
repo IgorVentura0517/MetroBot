@@ -13,14 +13,14 @@ def reconstruir_caminho(pai, destino):
     return caminho
 
 def bfs(grafo, origem, destino, bloqueadas=None):
+    if bloqueadas is None:
+        bloqueadas = set()
+
     if origem not in grafo or destino not in grafo:
         return None, []
     
     if origem in bloqueadas or destino in bloqueadas:
         return None, []
-    
-    if bloqueadas is None:
-        bloqueadas = set()
     
     fila = deque([origem])
     visitados = set()
@@ -52,6 +52,9 @@ def bfs(grafo, origem, destino, bloqueadas=None):
     return None, ordem_visita
 
 def dfs(grafo, origem, destino, bloqueadas=None):
+    if bloqueadas is None:
+        bloqueadas = set()
+        
     if origem not in grafo or destino not in grafo:
         return None, []
     

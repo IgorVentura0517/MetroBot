@@ -2,6 +2,7 @@ from data.linhas import LINHA_1_AZUL
 from core.grafo import construir_grafo
 from core.busca import bfs, dfs
 from data.locais import buscar_estacao, resolver_local
+from core.planejador import planejar_rota
 
 def main():
     grafo = construir_grafo(LINHA_1_AZUL)
@@ -20,25 +21,22 @@ def main():
         print("Destino não encontrado.")
         return
 
-    caminho_bfs, visita_bfs = bfs(
+    resultado = planejar_rota(
         grafo,
-        origem, 
-        destino
+        "Pinacoteca",
+        "Catedral da Sé",
+        algoritmo="bfs",
+        bloqueadas={"Jabaquara"}
     )
-    print("\nBFS")
-    print("Origem:", origem)
-    print("Destino:", destino)
-    print("Rota:", caminho_bfs)
 
-    caminho_dfs, visita_dfs = dfs(
-        grafo,
-        origem,
-        destino
-    )
-    print("\nDFS")
-    print("Origem:", origem)
-    print("Destino:", destino)
-    print("Rota:", caminho_dfs)
+
+    if resultado["sucesso"]:
+        print("Origem:", resultado["origem"])
+        print("Destino:", resultado["destino"])
+        print("Rota:", resultado["caminho"])
+        print("Ordem de visita:", resultado["ordem_visita"])
+    else:
+        print("Erro:", resultado["erro"])
 
 if __name__=="__main__":
     main()

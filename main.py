@@ -5,14 +5,21 @@ from core.busca import bfs
 def main():
     grafo = construir_grafo(LINHA_1_AZUL)
 
-    caminho = bfs(
+    caminho, ordem_visita = bfs(
         grafo,
         "Sé", 
         "São Joaquim"
     )
 
-    print("\n Rota encontrada: ")
-    print(caminho)
+    if caminho is None:
+        print("Não foi possível encontrar uma rota.")
+    else:
+    
+        print("Ordem de visita:")
+        print(ordem_visita)
+
+        print("\nRota encontrada:")
+        print(caminho)
 
 if __name__=="__main__":
     main()

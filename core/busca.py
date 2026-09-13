@@ -1,9 +1,14 @@
 from collections import deque
 
 def bfs(grafo, origem, destino):
+    
+    if origem not in grafo or destino not in grafo:
+        return None, []
+    
     fila = deque([origem])
     visitados = set()
     pai = {origem: None}
+    ordem_visita=[]
 
     while fila:
         atual = fila.popleft()
@@ -12,12 +17,11 @@ def bfs(grafo, origem, destino):
             continue
 
         visitados.add(atual)
-
-        print(f"Visitando: {atual}")
-
+        ordem_visita.append(atual)
 
         if atual == destino:
-            return reconstruir_caminho(pai, destino)
+            caminho = reconstruir_caminho(pai, destino)
+            return caminho, ordem_visita
             
         
         for vizinho in grafo[atual]:
@@ -25,7 +29,7 @@ def bfs(grafo, origem, destino):
                 pai[vizinho] = atual
                 fila.append(vizinho)
         
-    return None
+    return None, ordem_visita
 
 
 def reconstruir_caminho(pai, destino):

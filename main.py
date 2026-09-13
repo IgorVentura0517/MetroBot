@@ -1,25 +1,29 @@
 from data.linhas import LINHA_1_AZUL
 from core.grafo import construir_grafo
-from core.busca import bfs
+from core.busca import bfs, dfs
 
 def main():
     grafo = construir_grafo(LINHA_1_AZUL)
 
-    caminho, ordem_visita = bfs(
+    caminho_bfs, visita_bfs = bfs(
         grafo,
         "Sé", 
         "São Joaquim"
     )
 
-    if caminho is None:
-        print("Não foi possível encontrar uma rota.")
-    else:
-    
-        print("Ordem de visita:")
-        print(ordem_visita)
+    caminho_dfs, visita_dfs = dfs(
+        grafo,
+        "Sé",
+        "São Joaquim"
+    )
 
-        print("\nRota encontrada:")
-        print(caminho)
+    print("BFS")
+    print("Ordem de visita:", visita_bfs)
+    print("Caminho:", caminho_bfs)
+
+    print("\nDFS")
+    print("Ordem de visita:", visita_dfs)
+    print("Caminho:", caminho_dfs)
 
 if __name__=="__main__":
     main()

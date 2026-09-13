@@ -17,13 +17,25 @@ def bfs(grafo, origem, destino):
 
 
         if atual == destino:
-            print("Destino encontrado")
-            break
+            return reconstruir_caminho(pai, destino)
+            
         
         for vizinho in grafo[atual]:
             if vizinho not in visitados and vizinho not in pai:
                 pai[vizinho] = atual
                 fila.append(vizinho)
+        
+    return None
 
 
-    print(pai)
+def reconstruir_caminho(pai, destino):
+    caminho = []
+    atual = destino
+
+    while atual is not None:
+        caminho.append(atual)
+        atual = pai[atual]
+
+    caminho.reverse()
+
+    return caminho

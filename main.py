@@ -5,11 +5,14 @@ from core.busca import bfs
 def main():
     grafo = construir_grafo(LINHA_1_AZUL)
 
-    bfs(
+    caminho = bfs(
         grafo,
-        "Sé",
+        "Sé", 
         "São Joaquim"
     )
+
+    print("\n Rota encontrada: ")
+    print(caminho)
 
 if __name__=="__main__":
     main()

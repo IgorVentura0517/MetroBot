@@ -6,7 +6,7 @@ from data.locais import buscar_estacao
 def main():
     grafo = construir_grafo(LINHA_1_AZUL)
 
-    local = "MASP"
+    local = "Catedral da Sé"
     destino = buscar_estacao(local)
 
     if destino is None:
@@ -19,9 +19,13 @@ def main():
         destino
     )
 
-    print("Destino solicitado:", local)
-    print("Estação de destino:", destino)
-    print("Rota:", caminho_bfs)
+    print(buscar_estacao("Catedral da Sé"))
+    print(buscar_estacao("catedral da sé"))
+    print(buscar_estacao("CATEDRAL DA SÉ"))
+    print(buscar_estacao("   Catedral da Sé   "))
+    print(buscar_estacao("catedral da se"))
+    print(buscar_estacao("MUSEU DA LINGUA PORTUGUESA"))
+    print(buscar_estacao("MASP"))
 
 
     caminho_dfs, visita_dfs = dfs(
@@ -29,10 +33,6 @@ def main():
         "Tucuruvi",
         destino
     )
-
-    print("Destino solicitado:", local)
-    print("Estação de destino:", destino)
-    print("Rota:", caminho_dfs)
 
 
 

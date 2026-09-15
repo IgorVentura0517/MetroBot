@@ -41,7 +41,29 @@ LINHA_2_VERDE = [
     "Vila Prudente",
 ]
 
+LINHA_3_VERMELHA = [
+    "Palmeiras-Barra Funda",
+    "Marechal Deodoro",
+    "Santa Cecília",
+    "República",
+    "Anhangabaú",
+    "Sé",
+    "Pedro II",
+    "Brás",
+    "Bresser-Mooca",
+    "Belém",
+    "Tatuapé",
+    "Carrão",
+    "Penha",
+    "Vila Matilde",
+    "Guilhermina-Esperança",
+    "Patriarca-Vila Ré",
+    "Artur Alvim",
+    "Corinthians-Itaquera",
+]
+
 LINHAS = {
     "azul": LINHA_1_AZUL,
     "verde": LINHA_2_VERDE,
+    "vermelha": LINHA_3_VERMELHA,
 }

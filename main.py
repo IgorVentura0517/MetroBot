@@ -26,7 +26,7 @@ def main():
         grafo,
         linhas_do_trecho,
         "Vila Madalena",
-        "São Joaquim",
+        "Tatuapé",
         algoritmo="bfs"
     )
     

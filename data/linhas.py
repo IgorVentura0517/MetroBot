@@ -23,3 +23,25 @@ LINHA_1_AZUL = [
     "Conceição",
     "Jabaquara",
 ]
+
+LINHA_2_VERDE = [
+    "Vila Madalena",
+    "Sumaré",
+    "Clínicas",
+    "Consolação",
+    "Trianon-Masp",
+    "Brigadeiro",
+    "Paraíso",
+    "Ana Rosa",
+    "Chácara Klabin",
+    "Santos-Imigrantes",
+    "Alto do Ipiranga",
+    "Sacomã",
+    "Tamanduateí",
+    "Vila Prudente",
+]
+
+LINHAS = {
+    "azul": LINHA_1_AZUL,
+    "verde": LINHA_2_VERDE,
+}

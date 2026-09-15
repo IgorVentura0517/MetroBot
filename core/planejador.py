@@ -1,7 +1,8 @@
 from data.locais import resolver_local
 from core.busca import bfs, dfs
+from core.baldeacoes import identificar_baldeacoes
 
-def planejar_rota(grafo, origem_usuario, destino_usuario, algoritmo="bfs", bloqueadas=None):
+def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algoritmo="bfs", bloqueadas=None):
     origem = resolver_local(origem_usuario)
     destino = resolver_local(destino_usuario)
 
@@ -48,11 +49,18 @@ def planejar_rota(grafo, origem_usuario, destino_usuario, algoritmo="bfs", bloqu
             "erro": "Não foi possível encontrar uma rota."
         }
     
-    return{
+    baldeacoes = identificar_baldeacoes(
+    caminho,
+    linhas_do_trecho
+    )
+    
+    return {
         "sucesso": True,
         "origem": origem,
         "destino": destino,
         "caminho": caminho,
-        "ordem_visita":visita,
-        "algoritmo": algoritmo
+        "ordem_visita": visita,
+        "algoritmo": algoritmo,
+        "baldeacoes": baldeacoes,
+        "total_baldeacoes": len(baldeacoes)
     }

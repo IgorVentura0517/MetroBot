@@ -35,10 +35,6 @@ def main():
     linhas_do_trecho
 )
 
-    print("Rota:", resultado["caminho"])
-    print("Baldeações:", baldeacoes)
-
-
     if resultado["sucesso"]:
         print("Origem:", resultado["origem"])
         print("Destino:", resultado["destino"])

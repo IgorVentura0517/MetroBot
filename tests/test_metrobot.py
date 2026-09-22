@@ -2,6 +2,7 @@ from data.linhas import LINHAS
 from core.grafo import construir_grafo_multilinhas
 from core.planejador import planejar_rota
 from core.busca import bfs, dfs
+from core.logica import criar_fatos, estacao_bloqueada, pode_usar_estacao, calcular_bloqueadas
 
 
 grafo, linhas_do_trecho = construir_grafo_multilinhas(LINHAS)
@@ -138,3 +139,38 @@ def test_dfs_encontra_caminho():
     assert caminho is not None
     assert caminho[0] == "Sé"
     assert caminho[-1] == "São Joaquim"
+
+def test_regras_estacao_bloqueada():
+    fatos = criar_fatos({"Paraíso"})
+
+    assert estacao_bloqueada(fatos, "Paraíso") is True
+    assert pode_usar_estacao(fatos, "Paraíso") is False
+    assert pode_usar_estacao(fatos, "Sé") is True
+
+def test_planejador_com_fatos():
+    fatos = criar_fatos({"Paraíso"})
+
+    resultado = planejar_rota(
+        grafo,
+        linhas_do_trecho,
+        "Vila Madalena",
+        "São Joaquim",
+        algoritmo="bfs",
+        fatos=fatos
+    )
+
+    assert resultado["sucesso"] is False
+
+
+def test_linha_indisponivel():
+    fatos = criar_fatos(
+        linhas_indisponiveis={"verde"}
+    )
+
+    bloqueadas = calcular_bloqueadas(fatos)
+
+    assert "Vila Madalena" in bloqueadas
+    assert "Brigadeiro" in bloqueadas
+    assert "Chácara Klabin" in bloqueadas
+
+    assert "Tatuapé" not in bloqueadas

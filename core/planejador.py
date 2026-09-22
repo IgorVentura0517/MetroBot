@@ -1,8 +1,9 @@
 from data.locais import resolver_local
 from core.busca import bfs, dfs
 from core.baldeacoes import identificar_baldeacoes
+from core.logica import criar_fatos, calcular_bloqueadas
 
-def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algoritmo="bfs", bloqueadas=None):
+def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algoritmo="bfs", bloqueadas=None, fatos=None):
     origem = resolver_local(origem_usuario)
     destino = resolver_local(destino_usuario)
 
@@ -20,6 +21,10 @@ def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algo
             "sucesso": False,
             "erro": "Destino não encontrado."
         }
+    
+    if fatos is None:
+        fatos = criar_fatos(bloqueadas)
+    bloqueadas = calcular_bloqueadas(fatos)
     
     if algoritmo == "bfs":
         caminho, visita= bfs(

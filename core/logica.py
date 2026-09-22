@@ -26,10 +26,13 @@ def linha_disponivel(fatos, linha):
     return linha not in fatos["linhas_indisponiveis"]
 
 def calcular_bloqueadas(fatos):
-    bloqueadas = set(fatos["bloqueadas"])
+    return set(fatos["bloqueadas"])
 
-    for linha in fatos["linhas_indisponiveis"]:
-        if linha in LINHAS:
-            bloqueadas.update(LINHAS[linha])
+def trecho_disponivel(fatos, linhas_do_trecho, origem, destino):
+    linhas = linhas_do_trecho.get((origem, destino), set())
 
-    return bloqueadas
+    for linha in linhas:
+        if linha_disponivel(fatos, linha):
+            return True
+
+    return False

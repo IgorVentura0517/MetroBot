@@ -1,7 +1,7 @@
 from data.locais import resolver_local
 from core.busca import bfs, dfs
 from core.baldeacoes import identificar_baldeacoes
-from core.logica import criar_fatos, calcular_bloqueadas
+from core.logica import criar_fatos, calcular_bloqueadas, trecho_disponivel
 
 def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algoritmo="bfs", bloqueadas=None, fatos=None):
     origem = resolver_local(origem_usuario)
@@ -25,13 +25,23 @@ def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algo
     if fatos is None:
         fatos = criar_fatos(bloqueadas)
     bloqueadas = calcular_bloqueadas(fatos)
+
+    def trecho_permitido(origem, destino):
+        return trecho_disponivel(
+            fatos,
+            linhas_do_trecho,
+            origem,
+            destino
+    )
+
     
     if algoritmo == "bfs":
         caminho, visita= bfs(
         grafo,
         origem, 
         destino, 
-        bloqueadas
+        bloqueadas,
+        trecho_permitido
     )
         
     elif algoritmo =="dfs":
@@ -39,7 +49,8 @@ def planejar_rota(grafo, linhas_do_trecho, origem_usuario, destino_usuario, algo
         grafo,
         origem,
         destino,
-        bloqueadas
+        bloqueadas,
+        trecho_permitido
     )
         
     else:

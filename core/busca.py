@@ -12,7 +12,7 @@ def reconstruir_caminho(pai, destino):
 
     return caminho
 
-def bfs(grafo, origem, destino, bloqueadas=None):
+def bfs(grafo, origem, destino, bloqueadas=None, trecho_permitido=None):
     if bloqueadas is None:
         bloqueadas = set()
 
@@ -42,6 +42,10 @@ def bfs(grafo, origem, destino, bloqueadas=None):
             
         
         for vizinho in grafo[atual]:
+            if trecho_permitido is not None:
+                if not trecho_permitido(atual, vizinho):
+                    continue
+
             if (vizinho not in visitados 
                 and vizinho not in pai 
                 and vizinho not in bloqueadas
@@ -51,7 +55,7 @@ def bfs(grafo, origem, destino, bloqueadas=None):
         
     return None, ordem_visita
 
-def dfs(grafo, origem, destino, bloqueadas=None):
+def dfs(grafo, origem, destino, bloqueadas=None, trecho_permitido=None):
     if bloqueadas is None:
         bloqueadas = set()
         
@@ -80,6 +84,10 @@ def dfs(grafo, origem, destino, bloqueadas=None):
             return caminho, ordem_visita
         
         for vizinho in grafo[atual]:
+            if trecho_permitido is not None:
+                if not trecho_permitido(atual, vizinho):
+                    continue
+
             if (vizinho not in visitados 
                 and vizinho not in pai
                 and vizinho not in bloqueadas

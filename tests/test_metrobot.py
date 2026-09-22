@@ -2,7 +2,7 @@ from data.linhas import LINHAS
 from core.grafo import construir_grafo_multilinhas
 from core.planejador import planejar_rota
 from core.busca import bfs, dfs
-from core.logica import criar_fatos, estacao_bloqueada, pode_usar_estacao, calcular_bloqueadas
+from core.logica import criar_fatos, estacao_bloqueada, pode_usar_estacao, calcular_bloqueadas, trecho_disponivel
 
 
 grafo, linhas_do_trecho = construir_grafo_multilinhas(LINHAS)
@@ -167,10 +167,57 @@ def test_linha_indisponivel():
         linhas_indisponiveis={"verde"}
     )
 
-    bloqueadas = calcular_bloqueadas(fatos)
+    assert trecho_disponivel(
+        fatos,
+        linhas_do_trecho,
+        "Brigadeiro",
+        "Paraíso"
+    ) is False
 
-    assert "Vila Madalena" in bloqueadas
-    assert "Brigadeiro" in bloqueadas
-    assert "Chácara Klabin" in bloqueadas
+    assert trecho_disponivel(
+        fatos,
+        linhas_do_trecho,
+        "Paraíso",
+        "Ana Rosa"
+    ) is True
 
-    assert "Tatuapé" not in bloqueadas
+    assert trecho_disponivel(
+        fatos,
+        linhas_do_trecho,
+        "Paraíso",
+        "Vergueiro"
+    ) is True
+
+def test_planejador_com_linha_indisponivel():
+    fatos = criar_fatos(
+        linhas_indisponiveis={"verde"}
+    )
+
+    resultado = planejar_rota(
+        grafo,
+        linhas_do_trecho,
+        "Brigadeiro",
+        "São Joaquim",
+        algoritmo="bfs",
+        fatos=fatos
+    )
+
+    assert resultado["sucesso"] is False
+
+def test_azul_funciona_com_verde_indisponivel():
+    fatos = criar_fatos(
+        linhas_indisponiveis={"verde"}
+    )
+
+    resultado = planejar_rota(
+        grafo,
+        linhas_do_trecho,
+        "Vergueiro",
+        "Vila Mariana",
+        algoritmo="bfs",
+        fatos=fatos
+    )
+
+    assert resultado["sucesso"] is True
+    assert "Paraíso" in resultado["caminho"]
+    assert "Ana Rosa" in resultado["caminho"]

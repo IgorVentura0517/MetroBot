@@ -1,3 +1,5 @@
+## Autores: Erick Ventura Gamberini - 03099001; Igor Ventura - 1722540; Fernando Alves Landim - 1794239
+
 # 🚇 MetrôBot SP 2.0 - Agente Neuro-Simbólico de Roteamento
 
 Este projeto é a evolução do MetrôBot (versão 2.0), desenvolvido como desafio prático da disciplina de Inteligência Artificial e Machine Learning. O sistema atua como um agente autônomo focado em mobilidade urbana, capaz de interpretar linguagem natural, deduzir restrições lógicas e traçar a melhor rota entre as Linhas 1-Azul, 2-Verde e 3-Vermelha do Metrô de São Paulo.
@@ -52,5 +54,3 @@ python main.py
 **4. Interface de Usuário (GUI)**
 Para interagir com o bot visualmente, inicie o arquivo interface.ipynb dentro de um ambiente Jupyter (como o VS Code ou JupyterLab) e execute a célula integralmente.
 
-
-## Autores: Erick Ventura Gamberini - 03099001; Igor Ventura - 1722540; Fernando Alves Landim - 1794239

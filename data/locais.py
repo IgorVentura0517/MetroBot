@@ -2,12 +2,19 @@ import unicodedata
 from data.linhas import LINHAS
 
 LOCAIS = {
-    "Catedral da Sé": "Sé",
-    "Pinacoteca": "Luz",
-    "Museu da Língua Portuguesa": "Luz",
+   "Shopping Metrô Tucuruvi": "Tucuruvi",
     "Terminal Rodoviário Tietê": "Portuguesa-Tietê",
+    "Pinacoteca": "Luz",
+    "Catedral da Sé": "Sé",
     "Bairro da Liberdade": "Japão-Liberdade",
-    "Shopping Santa Cruz": "Santa Cruz",
+    "Terminal Rodoviário Jabaquara": "Jabaquara",
+    "Hospital das Clínicas": "Clínicas",
+    "MASP": "Trianon-Masp",
+    "Parque da Independência": "Santos-Imigrantes",
+    "Theatro Municipal": "Anhangabaú",
+    "Mercado Municipal": "São Bento",
+    "Neo Química Arena": "Corinthians-Itaquera",
+    "Mooca": "Bresser-Mooca"
 }
 
 def buscar_estacao(local):

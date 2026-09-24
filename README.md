@@ -53,4 +53,4 @@ python main.py
 Para interagir com o bot visualmente, inicie o arquivo interface.ipynb dentro de um ambiente Jupyter (como o VS Code ou JupyterLab) e execute a célula integralmente.
 
 
-## Autor: Erick Ventura Gamberini - 03099001
+## Autores: Erick Ventura Gamberini - 03099001; Igor Ventura - 1722540; Fernando Alves Landim - 1794239

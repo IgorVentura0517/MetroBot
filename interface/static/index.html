@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MetrôBot SP</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topo">
+  <div>
+    <h1>🚇 MetrôBot SP</h1>
+    <p class="sub">Linhas 1-Azul · 2-Verde · 3-Vermelha — <em>o LLM conversa, o algoritmo decide</em></p>
+  </div>
+  <span id="status-llm" class="badge">LLM: …</span>
+</header>
+
+<main>
+  <div class="grade">
+
+    <!-- ---------------- controles ---------------- -->
+    <section class="cartao">
+
+      <h2>Falar com o MetrôBot</h2>
+      <p class="texto">O LLM apenas entende o pedido e explica a rota. Quem calcula é a busca em grafo.</p>
+      <textarea id="mensagem" rows="2"
+        placeholder="Ex.: quero ir da Pinacoteca até o Tatuapé"></textarea>
+      <div class="linha">
+        <button type="button" id="btn-chat" class="btn info">💬 Perguntar ao MetrôBot</button>
+        <span id="msg-chat" class="msg"></span>
+      </div>
+
+      <hr>
+
+      <h2>Calcular rota</h2>
+      <div class="duas">
+        <label>Origem <select id="origem"></select></label>
+        <label>Destino <select id="destino"></select></label>
+      </div>
+
+      <fieldset>
+        <legend>Algoritmo de busca</legend>
+        <div id="algoritmos" class="radios"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cenário simulado (regras de <code>core/logica.py</code>)</legend>
+        <div class="duas">
+          <label>Estações fechadas
+            <select id="bloqueadas" multiple size="8"></select></label>
+          <div>
+            <span class="rotulo">Linhas indisponíveis</span>
+            <div id="linhas-indisponiveis" class="checks"></div>
+            <small class="dica">Ctrl/Cmd + clique para escolher várias estações.</small>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="linha">
+        <button type="button" id="btn-rota" class="btn ok">🔎 Buscar rota</button>
+        <button type="button" id="btn-limpar" class="btn">Limpar cenário</button>
+      </div>
+    </section>
+
+    <!-- ---------------- resultado ---------------- -->
+    <section id="resultado" class="cartao">
+      <p class="vazio">Escolha origem e destino e clique em <b>Buscar rota</b> —
+        ou peça em linguagem natural no campo ao lado.</p>
+    </section>
+  </div>
+
+  <section id="mapa" class="cartao mapa"></section>
+</main>
+
+<footer class="rodape">
+  MetrôBot SP · Atividade Prática 1 · IAML — busca em grafos + regras + LLM
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

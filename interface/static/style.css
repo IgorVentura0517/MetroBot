@@ -1,0 +1,132 @@
+/* MetrôBot SP — estilos da interface web */
+:root {
+  --azul: #1e88e5;
+  --verde: #2e7d32;
+  --vermelho: #d32f2f;
+  --fundo: #f3f5f8;
+  --cartao: #ffffff;
+  --texto: #1f2933;
+  --texto-2: #5f6b7a;
+  --borda: #dfe3e8;
+  --cinza-visitada: #9e9e9e;
+  --cinza-neutra: #e0e0e0;
+  --preto: #212121;
+  --ok: #2e7d32;
+  --info: #1565c0;
+  --erro-fundo: #fdecea;
+  --raio: 10px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* ---------- cabeçalho ---------- */
+.topo {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; flex-wrap: wrap; padding: 18px 24px 12px;
+}
+.topo h1 { margin: 0; font-size: 24px; }
+.sub { margin: 4px 0 0; color: var(--texto-2); }
+.badge {
+  background: #e8f5e9; color: var(--ok); border: 1px solid #c8e6c9;
+  padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+}
+.badge.off { background: #eceff1; color: var(--texto-2); border-color: #cfd8dc; }
+
+main { padding: 0 24px 32px; max-width: 1400px; margin: 0 auto; }
+.grade { display: grid; grid-template-columns: minmax(340px, 470px) 1fr; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .grade { grid-template-columns: 1fr; } }
+.duas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .duas { grid-template-columns: 1fr; } }
+.linha { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 10px 0 0; }
+
+/* ---------- cartões ---------- */
+.cartao {
+  background: var(--cartao); border: 1px solid var(--borda);
+  border-radius: var(--raio); padding: 16px 18px; margin-bottom: 16px;
+}
+.cartao h2 { margin: 0 0 6px; font-size: 16px; }
+hr { border: none; border-top: 1px solid var(--borda); margin: 18px 0 14px; }
+
+/* ---------- formulário ---------- */
+label { display: block; font-weight: 600; font-size: 13px; color: var(--texto-2); }
+label select, label textarea { margin-top: 4px; }
+.rotulo { font-weight: 600; font-size: 13px; color: var(--texto-2); display: block; }
+textarea, select {
+  width: 100%; font: inherit; color: var(--texto); background: #fff;
+  border: 1px solid var(--borda); border-radius: 8px; padding: 8px;
+}
+textarea { resize: vertical; }
+select[multiple] { padding: 4px; }
+fieldset { border: 1px solid var(--borda); border-radius: 8px; padding: 8px 12px 12px; margin: 14px 0 0; }
+legend { font-weight: 600; font-size: 13px; color: var(--texto-2); padding: 0 6px; }
+code { background: var(--fundo); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+.radios label, .checks label {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 500; color: var(--texto); margin: 4px 0;
+}
+.checks { margin-top: 6px; }
+.dica { color: var(--texto-2); display: block; margin-top: 10px; }
+.texto { color: var(--texto-2); margin: 4px 0 8px; }
+
+.btn {
+  font: inherit; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--borda); background: #fff; color: var(--texto);
+  padding: 8px 14px; border-radius: 8px;
+}
+.btn:hover { filter: brightness(.97); }
+.btn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.btn.info { background: var(--info); border-color: var(--info); color: #fff; }
+.btn:disabled { opacity: .6; cursor: wait; }
+.msg { color: var(--texto-2); font-size: 13px; }
+.msg.erro { color: var(--vermelho); }
+
+/* ---------- resultado ---------- */
+.vazio { color: var(--texto-2); margin: 0; }
+#resultado h3 { margin: 0 0 10px; font-size: 18px; }
+.narracao {
+  border-left: 4px solid var(--info); background: #f5f9ff;
+  padding: 10px 12px; border-radius: 6px; margin: 0 0 12px;
+  font-size: 15px; white-space: pre-wrap;
+}
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin: 10px 0; }
+.tile { background: var(--fundo); border-radius: 8px; padding: 8px 10px; }
+.tile .v { font-size: 22px; font-weight: 700; }
+.tile .k { font-size: 12px; color: var(--texto-2); }
+.caixa { padding: 10px 12px; border-radius: 6px; margin: 10px 0; border: 1px solid var(--vermelho); background: var(--erro-fundo); }
+.bloco { margin: 12px 0; }
+.bloco .k { font-weight: 600; color: var(--texto-2); font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 5px; }
+.chip { background: var(--fundo); border: 1px solid var(--borda); border-radius: 999px; padding: 2px 10px; font-size: 12px; }
+.chip.seta { background: none; border: none; padding: 0 2px; color: var(--texto-2); }
+.chip-linha { color: #fff; border: none; font-weight: 600; }
+.bloco ul { margin: 6px 0 0; padding-left: 18px; }
+details summary { cursor: pointer; color: var(--texto-2); font-size: 13px; }
+details .chips { margin-top: 8px; }
+
+/* ---------- mapa das linhas ---------- */
+.mapa { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.mapa:empty { display: none; }
+.coluna { border-left: 4px solid; padding-left: 10px; }
+.coluna h4 { margin: 0 0 6px; font-size: 14px; }
+.coluna h4.off { text-decoration: line-through; opacity: .6; }
+.est { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 22px; }
+.est .pt { width: 14px; height: 14px; border-radius: 50%; background: var(--cinza-neutra); flex: 0 0 14px; }
+.est.visitada .pt { background: var(--cinza-visitada); }
+.est.rota .pt { background: var(--cor); }
+.est.ponta { font-weight: 700; }
+.est.ponta .pt { background: var(--cor); box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--cor); }
+.est.bloqueada .pt { background: var(--preto); }
+.est .nome { min-width: 168px; }
+.est .marca { color: var(--texto-2); font-size: 12px; }
+.est .int { color: var(--texto-2); font-size: 11px; }
+.legenda { grid-column: 1 / -1; color: var(--texto-2); font-size: 12px; }
+
+.rodape { text-align: center; color: var(--texto-2); font-size: 12px; padding: 4px 24px 24px; }

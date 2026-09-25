@@ -1,56 +1,432 @@
 ## Autores: Erick Ventura Gamberini - 03099001; Igor Ventura - 1722540; Fernando Alves Landim - 1794239
 
-# 🚇 MetrôBot SP 2.0 - Agente Neuro-Simbólico de Roteamento
+# 🚇 MetrôBot SP
 
-Este projeto é a evolução do MetrôBot (versão 2.0), desenvolvido como desafio prático da disciplina de Inteligência Artificial e Machine Learning. O sistema atua como um agente autônomo focado em mobilidade urbana, capaz de interpretar linguagem natural, deduzir restrições lógicas e traçar a melhor rota entre as Linhas 1-Azul, 2-Verde e 3-Vermelha do Metrô de São Paulo.
+> **O LLM conversa. O algoritmo decide.**
 
-## 🧠 Arquitetura do Sistema
+O **MetrôBot SP** é uma aplicação de planejamento de rotas para o Metrô de São Paulo que combina **grafos, algoritmos de busca, regras lógicas, API REST, interface web e Large Language Models (LLMs)**.
 
-O MetrôBot utiliza o paradigma da **IA Neuro-Simbólica**, combinando três pilares essenciais da Inteligência Artificial:
+O sistema permite calcular rotas entre estações, identificar baldeações, considerar estações ou linhas indisponíveis e interpretar solicitações escritas em linguagem natural.
 
-1. **Processamento de Linguagem Natural (LLMs):** Modelos de linguagem (Llama via API Groq) atuam como os "olhos" e a "boca" do agente[cite: 1]. Um **Intérprete** transforma o pedido caótico do utilizador num formato JSON estruturado, lidando com sinônimos e intenções de acessibilidade. Um **Narrador** traduz o trajeto matemático gerado pelo sistema numa explicação simpática e em português claro[cite: 1].
-2. **Lógica de Primeira Ordem (Motor de Inferência):** Antes da rota ser calculada, um motor de encadeamento para a frente (*forward chaining*) cruza os dados do pedido com as regras do mundo[cite: 1]. Ele deduz a estação mais próxima (R1 e R2), bloqueia estações fechadas (R3) ou vias inteiras paralisadas (R7), averigua necessidades de elevadores (R4) e descobre automaticamente onde ocorrem as integrações (R6)[cite: 1].
-3. **Busca Heurística em Grafos (BFS e DFS):** Com as restrições lógicas definidas, os algoritmos clássicos percorrem um grafo bidirecional contendo 52 estações[cite: 1]. A Busca em Largura (BFS) assegura o caminho com menor número de paradas, enquanto o sistema registra onde o passageiro necessitará fazer baldeações (transbordos)[cite: 1].
+Exemplo:
 
-## ✨ Principais Funcionalidades
-
-* **Cobertura Multi-Linhas:** Rotas integradas cobrindo 52 estações únicas das Linhas Azul, Verde e Vermelha, com transbordos automáticos mapeados na Sé, Paraíso e Ana Rosa[cite: 1].
-* **Validação de NLP Avançada (Guardrails):** A entrada em texto livre suporta apelidos e omissões (ex: "HC", "Itaquera"), contendo travas de segurança para evitar alucinações (nomes que não existem) ou forçar um *fallback* robusto *offline* caso a API de linguagem fique inoperante[cite: 1].
-* **Painel Gráfico Dinâmico:** Interface desenvolvida com `ipywidgets`, exibindo um *render* visual em HTML com as cores oficiais das linhas e marcadores de estado (bloqueada, visitada, rota)[cite: 1].
-* **Suite de Testes Automatizados:** Cobertura de 6 cenários de uso obrigatórios (testes de mesa), garantindo a robustez do cálculo de trajetos sob diferentes anomalias (ex: estação de integração fechada)[cite: 1].
-
-## 📂 Estrutura do Projeto
-
-O código, inicialmente um bloco monolítico, foi refatorado seguindo as melhores práticas de engenharia de software, separando responsabilidades:
-
-* `dados.py`: Armazena as listas de estações, locais de referência, construção da lista de adjacências e cálculo de baldeações.
-* `busca.py`: Isola as lógicas puras de exploração em árvore/grafo (`bfs` e `dfs`).
-* `logica.py`: Gerencia a Base de Conhecimento, Fatos e Regras em formato de tuplas, executando o motor de encadeamento para a frente.
-* `llm.py`: Trata a injeção de *prompts*, comunicação com a API (via pacote `groq` e `.env`) e modos de segurança *offline*.
-* `main.py`: O "cérebro" orquestrador, onde reside a função `planejar()` e o executor dos testes automatizados.
-* `interface.ipynb`: O notebook Jupyter encarregado de desenhar e orquestrar os controles visuais da aplicação.
-
-## 🚀 Como Instalar e Rodar
-
-**1. Pré-requisitos e Dependências**
-Certifique-se de ter o Python 3.10 ou superior. No terminal, instale os requisitos:
-```bash
-pip install groq python-dotenv ipywidgets
+```text
+Quero sair da Pinacoteca e ir para Tatuapé.
 ```
 
-**2. Gestão de Chaves (Segurança)**
-O projeto não possui chaves de API expostas no código. Crie um arquivo exatamente com o nome .env na raiz da pasta e adicione as suas credenciais:
-```Plaintext
-GROQ_API_KEY=gsk_sua_chave_de_acesso_aqui
+O sistema interpreta a solicitação, associa a **Pinacoteca** à estação **Luz**, calcula deterministicamente a rota sobre o grafo do metrô, identifica as trocas de linha necessárias e utiliza um LLM para apresentar o resultado de maneira natural.
+
+A principal decisão arquitetural do projeto é:
+
+```text
+LLM → interpreta
+Algoritmo → calcula
+LLM → explica
 ```
 
-**3. Teste de Validação (CLI)**
-Para aferir a integridade da árvore de decisão e motor de busca, execute os testes unitários via linha de comando:
-```Bash
-python main.py
-```
-(Saída esperada: "✅ Todos os testes obrigatórios passaram com sucesso!")
+> O modelo de linguagem **não decide a rota**. O cálculo permanece sob responsabilidade dos algoritmos e das regras implementadas no core da aplicação.
 
-**4. Interface de Usuário (GUI)**
-Para interagir com o bot visualmente, inicie o arquivo interface.ipynb dentro de um ambiente Jupyter (como o VS Code ou JupyterLab) e execute a célula integralmente.
+---
+
+## 📌 Funcionalidades
+
+- Representação de múltiplas linhas do metrô
+- Modelagem da rede utilizando grafos
+- Busca de rotas com **BFS**
+- Busca de rotas com **DFS**
+- Identificação automática de baldeações
+- Minimização de trocas desnecessárias entre linhas
+- Suporte a estações bloqueadas
+- Suporte a linhas indisponíveis
+- Associação de pontos de interesse a estações
+- Normalização das entradas do usuário
+- Interpretação de linguagem natural com LLM
+- Geração de respostas amigáveis com LLM
+- API REST utilizando FastAPI
+- Interface web em HTML, CSS e JavaScript
+- Documentação automática via Swagger/OpenAPI
+- Testes automatizados com pytest
+- Gerenciamento da chave da API através de variável de ambiente
+
+---
+
+# 🏗️ Arquitetura
+
+O projeto utiliza uma arquitetura modular em camadas, separando interface, API, inteligência artificial, regras de negócio, algoritmos e dados.
+
+```text
+                         USUÁRIO
+                            │
+                            ▼
+                ┌─────────────────────┐
+                │      FRONTEND       │
+                │                     │
+                │   HTML + CSS + JS   │
+                └──────────┬──────────┘
+                           │
+                           │ HTTP / JSON
+                           ▼
+                ┌─────────────────────┐
+                │       FastAPI       │
+                │                     │
+                │   /rota    /chat    │
+                └──────────┬──────────┘
+                           │
+             ┌─────────────┴─────────────┐
+             │                           │
+             ▼                           ▼
+      ┌──────────────┐            ┌──────────────┐
+      │ Planejador   │            │ Intérprete   │
+      │              │            │     LLM      │
+      └──────┬───────┘            └──────┬───────┘
+             │                           │
+             │                    origem/destino
+             │                           │
+             └─────────────┬─────────────┘
+                           ▼
+                ┌─────────────────────┐
+                │        CORE         │
+                │                     │
+                │ Grafo               │
+                │ BFS / DFS           │
+                │ Regras              │
+                │ Baldeações          │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │  Resultado da rota  │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │    Narrador LLM     │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │       FastAPI       │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                        FRONTEND
+```
+
+Essa separação mantém a lógica crítica de roteamento independente do modelo generativo.
+
+---
+
+# 🧠 Princípio central: o LLM não calcula a rota
+
+Uma das principais características do projeto é a separação entre **inteligência generativa** e **lógica determinística**.
+
+Considere a mensagem:
+
+```text
+Quero sair da Pinacoteca e ir para Tatuapé.
+```
+
+O LLM é responsável por transformar a mensagem em dados estruturados:
+
+```json
+{
+  "origem": "Pinacoteca",
+  "destino": "Tatuapé",
+  "algoritmo": "bfs"
+}
+```
+
+A partir desse ponto, o cálculo passa para o core da aplicação.
+
+O sistema resolve:
+
+```text
+Pinacoteca
+    ↓
+Luz
+```
+
+Em seguida, o algoritmo calcula a rota:
+
+```text
+Luz
+→ São Bento
+→ Sé
+→ Pedro II
+→ Brás
+→ Bresser-Mooca
+→ Belém
+→ Tatuapé
+```
+
+Depois, o sistema identifica a baldeação:
+
+```text
+Sé
+Linha 1-Azul → Linha 3-Vermelha
+```
+
+Somente então o resultado calculado é entregue novamente ao LLM para ser apresentado em linguagem natural.
+
+O fluxo pode ser resumido como:
+
+```text
+LINGUAGEM NATURAL
+        ↓
+       LLM
+        ↓
+DADOS ESTRUTURADOS
+        ↓
+  ALGORITMOS
+        ↓
+RESULTADO DETERMINÍSTICO
+        ↓
+       LLM
+        ↓
+RESPOSTA NATURAL
+```
+
+---
+
+# 🗺️ Modelagem da rede como grafo
+
+A rede do metrô é representada através de um grafo:
+
+```text
+G = (V, E)
+```
+
+Onde:
+
+- **V** representa o conjunto de vértices
+- **E** representa o conjunto de arestas
+
+No MetrôBot:
+
+```text
+Vértice = estação
+Aresta   = ligação entre estações consecutivas
+```
+
+Por exemplo:
+
+```text
+Luz ─── São Bento ─── Sé
+```
+
+pode ser representado internamente como:
+
+```python
+{
+    "Luz": ["São Bento"],
+    "São Bento": ["Luz", "Sé"],
+    "Sé": ["São Bento"]
+}
+```
+
+A rede é tratada essencialmente como um **grafo não direcionado**, já que os deslocamentos podem ocorrer nos dois sentidos das linhas modeladas.
+
+---
+
+# 🚇 Linhas modeladas
+
+A versão atual trabalha com:
+
+- 🔵 **Linha 1 — Azul**
+- 🟢 **Linha 2 — Verde**
+- 🔴 **Linha 3 — Vermelha**
+
+As linhas são armazenadas como listas ordenadas de estações.
+
+Exemplo conceitual:
+
+```python
+LINHAS = {
+    "azul": [...],
+    "verde": [...],
+    "vermelha": [...]
+}
+```
+
+A partir dessas listas, o sistema constrói automaticamente as conexões do grafo.
+
+---
+
+# 🔎 Algoritmos de busca
+
+## BFS — Breadth-First Search
+
+A **Busca em Largura (BFS)** explora o grafo nível por nível.
+
+Ela utiliza uma fila seguindo o modelo:
+
+```text
+FIFO — First In, First Out
+```
+
+Fluxo conceitual:
+
+```text
+Origem
+  │
+  ├── vizinho
+  ├── vizinho
+  └── vizinho
+       │
+       └── próximos vizinhos
+```
+
+Como a rede modelada é um grafo não ponderado, a BFS permite encontrar um caminho com o **menor número de arestas**.
+
+No contexto atual do projeto, isso corresponde à minimização do número de deslocamentos entre estações.
+
+> Isso não representa necessariamente o menor tempo real de viagem, pois fatores como duração entre estações, espera, lotação e tempo de baldeação não são atualmente utilizados como pesos.
+
+---
+
+## DFS — Depth-First Search
+
+A **Busca em Profundidade (DFS)** explora profundamente um caminho antes de retornar para explorar outras alternativas.
+
+Conceitualmente:
+
+```text
+A
+│
+B
+│
+C
+│
+D
+```
+
+A DFS pode encontrar um caminho válido entre origem e destino, mas não possui a mesma garantia da BFS de encontrar o menor caminho em quantidade de arestas em um grafo não ponderado.
+
+A presença dos dois algoritmos permite também estudar e visualizar diferentes estratégias de exploração de grafos.
+
+---
+
+# 🧭 Caminho × ordem de visita
+
+Os algoritmos retornam duas informações diferentes:
+
+```text
+caminho
+ordem_visita
+```
+
+### Caminho
+
+Representa a rota final encontrada.
+
+Exemplo:
+
+```text
+Luz
+→ São Bento
+→ Sé
+→ Pedro II
+→ Brás
+→ Bresser-Mooca
+→ Belém
+→ Tatuapé
+```
+
+### Ordem de visita
+
+Representa as estações exploradas pelo algoritmo durante a busca.
+
+Ela permite visualizar o **esforço do algoritmo** até encontrar o destino.
+
+Por isso, a ordem de visita pode conter diversas estações que não fazem parte da rota final.
+
+---
+
+# 🔄 Sistema de baldeações
+
+Após encontrar um caminho, o sistema determina quais linhas podem ser utilizadas em cada trecho.
+
+Exemplo:
+
+```text
+Vila Madalena
+    ↓
+Linha Verde
+    ↓
+Paraíso
+    ↓
+Linha Azul
+    ↓
+Sé
+    ↓
+Linha Vermelha
+    ↓
+Tatuapé
+```
+
+O resultado pode conter:
+
+```json
+[
+  {
+    "estacao": "Paraíso",
+    "de": "verde",
+    "para": "azul"
+  },
+  {
+    "estacao": "Sé",
+    "de": "azul",
+    "para": "vermelha"
+  }
+]
+```
+
+Nesse exemplo:
+
+```text
+Total de baldeações: 2
+```
+
+---
+
+# 🧮 Minimização de baldeações
+
+Alguns trechos podem pertencer a mais de uma linha.
+
+Escolher arbitrariamente uma linha para cada trecho poderia criar baldeações artificiais.
+
+Por isso, o MetrôBot considera o custo acumulado das escolhas de linha.
+
+A lógica básica é:
+
+```text
+continuar na mesma linha → custo +0
+trocar de linha          → custo +1
+```
+
+Conceitualmente:
+
+```python
+if linha_anterior == nova_linha:
+    novo_custo = custo_anterior
+else:
+    novo_custo = custo_anterior + 1
+```
+
+A estratégia permite escolher uma sequência de linhas que evite trocas desnecessárias.
+
+---
+
+# 🚫 Restrições e regras
+
+O sistema suporta fatos que alteram as rotas disponíveis.
+
+Exemplos:
+
+```text
+estações bloqueadas
+linhas indisponíveis
+```
+
+Uma
 
